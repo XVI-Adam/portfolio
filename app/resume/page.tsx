@@ -32,7 +32,7 @@ export default function ResumePage() {
             <span className="absolute -left-[41px] top-1 h-5 w-5 rounded-full border-4 border-slate-950 bg-indigo-500 group-hover:scale-125 transition-transform"></span>
             
             <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-              <h3 className="text-2xl font-bold text-white">Software Developer | Internal Tools</h3>
+              <h3 className="text-2xl font-bold text-white">Associate Software Developer | Internal Tools</h3>
               <span className="text-indigo-400 font-mono text-sm">Oct 2025 — Present</span>
             </div>
             <div className="text-slate-500 mb-4">Sigo Signs • Norwood, NJ</div>
@@ -157,22 +157,27 @@ export default function ResumePage() {
                     <span>#Analytics</span>
                 </div>
             </div>
-
+            
             {/* Resume Project 3: Jewelry AI */}
-            <div className="group p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-emerald-500/50 transition-all hover:shadow-lg hover:shadow-emerald-900/20">
-                <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">AI Shopping Assistant</h3>
-                    <span className="text-xs bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded">E-Comm</span>
-                </div>
-                <p className="text-slate-400 text-sm mb-4 leading-relaxed">
-                    Virtual assistant built with Google Gemini and Taipy GUI. Handled conversational product search and managed cart state via Firestore.
-                </p>
-                <div className="flex gap-2 text-xs text-slate-500 font-mono">
-                    <span>#Gemini</span>
-                    <span>#Firestore</span>
-                    <span>#Python</span>
-                </div>
-            </div>
+            <a
+              href="https://github.com/XVI-Adam/gemini-jewelry-chatbot"
+              target="_blank"
+              rel="noreferrer"
+              className="group block p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-emerald-500/50 transition-all hover:shadow-lg hover:shadow-emerald-900/20"
+            >
+              <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">AI Shopping Assistant</h3>
+                  <span className="text-xs bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded">E-Comm</span>
+              </div>
+              <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+                  Virtual assistant built with Google Gemini and Taipy GUI. Handled conversational product search and managed cart state via Firestore.
+              </p>
+              <div className="flex gap-2 text-xs text-slate-500 font-mono">
+                  <span>#Gemini</span>
+                  <span>#Firestore</span>
+                  <span>#Python</span>
+              </div>
+            </a>
 
             {/* NEW SLOT: Add your extra project here */}
             <div className="group p-6 rounded-xl bg-slate-900/30 border border-slate-800 border-dashed hover:border-slate-600 transition-all flex flex-col justify-center items-center text-center cursor-pointer">
