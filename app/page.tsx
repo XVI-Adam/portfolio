@@ -33,15 +33,15 @@ export default function Home() {
            <div className="absolute -inset-4 bg-gradient-to-r from-orange-600 to-amber-600 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
            
            {/* IMAGE CONTAINER */}
-           <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-2 border-slate-800 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500 bg-slate-900">
+             <a href="https://github.com/XVI-Adam" className="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-2 border-slate-800 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500 bg-slate-900 block">
                <Image  
-                 src="/profilePic.jpeg"  
-                 alt="Adam Martinez" 
-                 fill 
-                 className="object-cover"
-                 priority
+               src="/profilePic.jpeg"
+               alt="Adam Martinez" 
+               fill 
+               className="object-cover"
+               priority
                />
-           </div>
+             </a>
         </div>
       </section>
 

@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tell Tailwind where to look for class names */
+@source "./app/**/*.{ts,tsx,mdx}";
+@source "./components/**/*.{ts,tsx,mdx}";
 
 :root {
   --background: #020617; /* Slate 950 */
@@ -8,24 +10,11 @@
 }
 
 body {
-  /* Meta Knight as default */
+  background: #020617; 
+  color: #e2e8f0;      
   cursor: url('/cursor.png') 16 16, auto;
 }
 
 a, button, [role="button"], input, select, textarea {
-  /* Sword as pointer */
-  /* The "0 0" here means the top-left tip of the sword is the click point */
   cursor: url('/pointer.png') 0 0, pointer;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #0f172a;
-}
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
 }

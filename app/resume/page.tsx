@@ -127,20 +127,25 @@ export default function ResumePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* Resume Project 1: AI Hackathon */}
-            <div className="group p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-900/20">
-                <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">AI Workflows Hackathon</h3>
-                    <span className="text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded">Fractal Tech</span>
-                </div>
-                <p className="text-slate-400 text-sm mb-4 leading-relaxed">
-                    Built a multi-agent educational app using CrewAI and OpenAI. Agents automatically summarized Arxiv papers and generated quiz content for students.
-                </p>
-                <div className="flex gap-2 text-xs text-slate-500 font-mono">
-                    <span>#CrewAI</span>
-                    <span>#Python</span>
-                    <span>#LLM</span>
-                </div>
-            </div>
+            <a
+              href="https://github.com/EmmS21/AIWorkflowsHackathon"
+              target="_blank"
+              rel="noreferrer"
+              className="group block p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-900/20"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">AI Workflows Hackathon</h3>
+                <span className="text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded">Fractal Tech</span>
+              </div>
+              <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+                Built a multi-agent educational app using CrewAI and OpenAI. Agents automatically summarized Arxiv papers and generated quiz content for students.
+              </p>
+              <div className="flex gap-2 text-xs text-slate-500 font-mono">
+                <span>#CrewAI</span>
+                <span>#Python</span>
+                <span>#LLM</span>
+              </div>
+            </a>
 
             {/* Resume Project 2: Music Site */}
             <div className="group p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-fuchsia-500/50 transition-all hover:shadow-lg hover:shadow-fuchsia-900/20">
