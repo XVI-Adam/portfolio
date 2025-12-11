@@ -37,7 +37,7 @@ export default function ConsultingPage() {
         <h3 className="text-2xl font-bold text-white mb-2">Ready to build?</h3>
         <p className="text-slate-300 mb-6">I am currently accepting new projects for Q4 2025.</p>
         <Link 
-          href="mailto:your.email@example.com"
+          href="mailto:adammartinez.martinez2@gmail.com?subject=Consulting%20Inquiry"
           className="bg-white text-slate-950 px-6 py-3 rounded-full font-bold hover:bg-slate-200 transition-transform hover:scale-105 inline-block hover-target"
         >
           Contact Me

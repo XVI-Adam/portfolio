@@ -112,7 +112,7 @@ export default function ResumePage() {
             
             <div className="space-y-2 text-sm text-slate-400">
                 <p><strong className="text-slate-300">Activities:</strong> ACM Club, GDSC Club Lead Tech Dev, Division 1 eSports Athlete (Super Smash Bros Ultimate), CodePath, ColorStack.</p>
-                <p><strong className="text-slate-300">Coursework:</strong> Data Structures & Algo I/II, Database Systems, Data Mining, Business Statistics.</p>
+                <p><strong className="text-slate-300">Relevant Coursework:</strong> Data Structures & Algo I/II, Database Systems, Data Mining, Business Statistics, Data Privacy.</p>
             </div>
         </div>
       </section>
