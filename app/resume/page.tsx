@@ -1,6 +1,187 @@
+'use client';
+
 import { PageShell } from '@/components/layout/PageShell';
+import { FormEvent, KeyboardEvent, useState } from 'react';
+
+type Accent = 'blue' | 'fuchsia' | 'emerald' | 'slate';
+
+type Project = {
+  title: string;
+  badge: string;
+  description: string;
+  tags: string[];
+  accent: Accent;
+  href?: string;
+};
+
+const accentStyles: Record<
+  Accent,
+  { hoverBorder: string; hoverShadow: string; badgeBg: string; badgeText: string; titleHover: string }
+> = {
+  blue: {
+    hoverBorder: 'hover:border-blue-500/50',
+    hoverShadow: 'hover:shadow-blue-900/20',
+    badgeBg: 'bg-blue-900/30',
+    badgeText: 'text-blue-300',
+    titleHover: 'group-hover:text-blue-400',
+  },
+  fuchsia: {
+    hoverBorder: 'hover:border-fuchsia-500/50',
+    hoverShadow: 'hover:shadow-fuchsia-900/20',
+    badgeBg: 'bg-fuchsia-900/30',
+    badgeText: 'text-fuchsia-300',
+    titleHover: 'group-hover:text-fuchsia-400',
+  },
+  emerald: {
+    hoverBorder: 'hover:border-emerald-500/50',
+    hoverShadow: 'hover:shadow-emerald-900/20',
+    badgeBg: 'bg-emerald-900/30',
+    badgeText: 'text-emerald-300',
+    titleHover: 'group-hover:text-emerald-400',
+  },
+  slate: {
+    hoverBorder: 'hover:border-slate-600/70',
+    hoverShadow: 'hover:shadow-slate-900/30',
+    badgeBg: 'bg-slate-800/70',
+    badgeText: 'text-slate-200',
+    titleHover: 'group-hover:text-slate-50',
+  },
+};
+
+const initialProjects: Project[] = [
+  {
+    title: 'AI Workflows Hackathon',
+    badge: 'Fractal Tech',
+    description:
+      'Built a multi-agent educational app using CrewAI and OpenAI. Agents automatically summarized Arxiv papers and generated quiz content for students.',
+    tags: ['#CrewAI', '#Python', '#LLM'],
+    accent: 'blue',
+    href: 'https://github.com/EmmS21/AIWorkflowsHackathon',
+  },
+  {
+    title: 'Artist Analytics Site',
+    badge: 'Personal',
+    description:
+      'A responsive TypeScript site integrating the Spotify API. Displayed real-time streaming stats and resulted in a 30% increase in engagement for the artist.',
+    tags: ['#TypeScript', '#SpotifyAPI', '#Analytics'],
+    accent: 'fuchsia',
+  },
+  {
+    title: 'AI Shopping Assistant',
+    badge: 'E-Comm',
+    description:
+      'Virtual assistant built with Google Gemini and Taipy GUI. Handled conversational product search and managed cart state via Firestore.',
+    tags: ['#Gemini', '#Firestore', '#Python'],
+    accent: 'emerald',
+    href: 'https://github.com/XVI-Adam/gemini-jewelry-chatbot',
+  },
+];
+
+const createBlankProject = (): Project => ({
+  title: '',
+  badge: 'Personal',
+  description: '',
+  tags: [],
+  href: '',
+  accent: 'slate',
+});
 
 export default function ResumePage() {
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [isAddingProject, setIsAddingProject] = useState(false);
+  const [newProject, setNewProject] = useState<Project>(createBlankProject());
+  const [tagInput, setTagInput] = useState('');
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const handleAddTag = () => {
+    const cleaned = tagInput.trim();
+    if (!cleaned) return;
+
+    const tag = cleaned.startsWith('#') ? cleaned : `#${cleaned}`;
+    if (newProject.tags.includes(tag)) {
+      setTagInput('');
+      return;
+    }
+
+    setNewProject((prev) => ({ ...prev, tags: [...prev.tags, tag] }));
+    setTagInput('');
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setNewProject((prev) => ({ ...prev, tags: prev.tags.filter((tag) => tag !== tagToRemove) }));
+  };
+
+  const handleProjectSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!newProject.title.trim() || !newProject.description.trim()) {
+      setFormError('Add a title and description before saving.');
+      return;
+    }
+
+    const cleanedTags = newProject.tags.length ? newProject.tags : ['#Project'];
+    const href = newProject.href?.trim();
+
+    setProjects((prev) => [
+      ...prev,
+      {
+        ...newProject,
+        title: newProject.title.trim(),
+        badge: newProject.badge.trim() || 'Personal',
+        description: newProject.description.trim(),
+        tags: cleanedTags,
+        href: href ? href : undefined,
+      },
+    ]);
+
+    setNewProject(createBlankProject());
+    setTagInput('');
+    setFormError(null);
+    setIsAddingProject(false);
+  };
+
+  const handleCancel = () => {
+    setNewProject(createBlankProject());
+    setTagInput('');
+    setFormError(null);
+    setIsAddingProject(false);
+  };
+
+  const handleTagKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' || event.key === ',') {
+      event.preventDefault();
+      handleAddTag();
+    }
+  };
+
+  const ProjectCard = ({ project }: { project: Project }) => {
+    const accent = accentStyles[project.accent];
+    const className = `group block p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 transition-all hover:shadow-lg ${accent.hoverBorder} ${accent.hoverShadow}`;
+
+    const content = (
+      <>
+        <div className="flex justify-between items-start mb-4">
+          <h3 className={`text-lg font-bold text-white ${accent.titleHover}`}>{project.title}</h3>
+          <span className={`text-xs px-2 py-1 rounded ${accent.badgeBg} ${accent.badgeText}`}>{project.badge}</span>
+        </div>
+        <p className="text-slate-400 text-sm mb-4 leading-relaxed">{project.description}</p>
+        <div className="flex gap-2 flex-wrap text-xs text-slate-500 font-mono">
+          {project.tags.map((tag) => (
+            <span key={tag}>{tag}</span>
+          ))}
+        </div>
+      </>
+    );
+
+    return project.href ? (
+      <a href={project.href} target="_blank" rel="noreferrer" className={className}>
+        {content}
+      </a>
+    ) : (
+      <div className={className}>{content}</div>
+    );
+  };
+
   return (
     <PageShell title="Resume & Career" subtitle="Software Developer with Ops & Full Stack Experience.">
       
@@ -112,7 +293,7 @@ export default function ResumePage() {
             
             <div className="space-y-2 text-sm text-slate-400">
                 <p><strong className="text-slate-300">Activities:</strong> ACM Club, GDSC Club Lead Tech Dev, Division 1 eSports Athlete (Super Smash Bros Ultimate), CodePath, ColorStack.</p>
-                <p><strong className="text-slate-300">Relevant Coursework:</strong> Data Structures & Algo I/II, Database Systems, Data Mining, Business Statistics, Data Privacy.</p>
+                <p><strong className="text-slate-300">Coursework:</strong> Data Structures & Algo I/II, Database Systems, Data Mining, Business Statistics.</p>
             </div>
         </div>
       </section>
@@ -125,67 +306,159 @@ export default function ResumePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Resume Project 1: AI Hackathon */}
-            <a
-              href="https://github.com/EmmS21/AIWorkflowsHackathon"
-              target="_blank"
-              rel="noreferrer"
-              className="group block p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-900/20"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">AI Workflows Hackathon</h3>
-                <span className="text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded">Fractal Tech</span>
-              </div>
-              <p className="text-slate-400 text-sm mb-4 leading-relaxed">
-                Built a multi-agent educational app using CrewAI and OpenAI. Agents automatically summarized Arxiv papers and generated quiz content for students.
-              </p>
-              <div className="flex gap-2 text-xs text-slate-500 font-mono">
-                <span>#CrewAI</span>
-                <span>#Python</span>
-                <span>#LLM</span>
-              </div>
-            </a>
+            {projects.map((project, index) => (
+              <ProjectCard key={`${project.title}-${index}`} project={project} />
+            ))}
 
-            {/* Resume Project 2: Music Site */}
-            <div className="group p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-fuchsia-500/50 transition-all hover:shadow-lg hover:shadow-fuchsia-900/20">
-                <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-bold text-white group-hover:text-fuchsia-400 transition-colors">Artist Analytics Site</h3>
-                    <span className="text-xs bg-fuchsia-900/30 text-fuchsia-300 px-2 py-1 rounded">Personal</span>
+            {isAddingProject ? (
+              <form
+                onSubmit={handleProjectSubmit}
+                className="md:col-span-2 space-y-4 p-6 rounded-xl bg-slate-900/40 border border-slate-800"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-white font-semibold">Add a project</p>
+                    <p className="text-xs text-slate-500">Drop in a quick description, link, and tags/tech.</p>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] uppercase tracking-widest text-slate-500">Accent</label>
+                    <select
+                      value={newProject.accent}
+                      onChange={(event) => {
+                        setFormError(null);
+                        setNewProject((prev) => ({ ...prev, accent: event.target.value as Accent }));
+                      }}
+                      className="bg-slate-950 border border-slate-800 text-slate-200 text-sm rounded-lg px-3 py-2"
+                    >
+                      <option value="blue">Blue</option>
+                      <option value="fuchsia">Fuchsia</option>
+                      <option value="emerald">Emerald</option>
+                      <option value="slate">Slate</option>
+                    </select>
+                  </div>
                 </div>
-                <p className="text-slate-400 text-sm mb-4 leading-relaxed">
-                    A responsive TypeScript site integrating the Spotify API. Displayed real-time streaming stats and resulted in a 30% increase in engagement for the artist.
-                </p>
-                <div className="flex gap-2 text-xs text-slate-500 font-mono">
-                    <span>#TypeScript</span>
-                    <span>#SpotifyAPI</span>
-                    <span>#Analytics</span>
-                </div>
-            </div>
-            
-            {/* Resume Project 3: Jewelry AI */}
-            <a
-              href="https://github.com/XVI-Adam/gemini-jewelry-chatbot"
-              target="_blank"
-              rel="noreferrer"
-              className="group block p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-900 border border-slate-800 hover:border-emerald-500/50 transition-all hover:shadow-lg hover:shadow-emerald-900/20"
-            >
-              <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">AI Shopping Assistant</h3>
-                  <span className="text-xs bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded">E-Comm</span>
-              </div>
-              <p className="text-slate-400 text-sm mb-4 leading-relaxed">
-                  Virtual assistant built with Google Gemini and Taipy GUI. Handled conversational product search and managed cart state via Firestore.
-              </p>
-              <div className="flex gap-2 text-xs text-slate-500 font-mono">
-                  <span>#Gemini</span>
-                  <span>#Firestore</span>
-                  <span>#Python</span>
-              </div>
-            </a>
 
-            {/* NEW SLOT: Add your extra project here */}
-            <div className="group p-6 rounded-xl bg-slate-900/30 border border-slate-800 border-dashed hover:border-slate-600 transition-all flex flex-col justify-center items-center text-center cursor-pointer">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-slate-400">Project title</label>
+                    <input
+                      value={newProject.title}
+                      onChange={(event) => {
+                        setFormError(null);
+                        setNewProject((prev) => ({ ...prev, title: event.target.value }));
+                      }}
+                      className="w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 focus:border-blue-500 focus:outline-none"
+                      placeholder="Warehouse automations, finance tool, etc."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm text-slate-400">Badge / context</label>
+                    <input
+                      value={newProject.badge}
+                      onChange={(event) => {
+                        setFormError(null);
+                        setNewProject((prev) => ({ ...prev, badge: event.target.value }));
+                      }}
+                      className="w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 focus:border-blue-500 focus:outline-none"
+                      placeholder="Personal, Client, Hackathon..."
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm text-slate-400">Description</label>
+                  <textarea
+                    value={newProject.description}
+                    onChange={(event) => {
+                      setFormError(null);
+                      setNewProject((prev) => ({ ...prev, description: event.target.value }));
+                    }}
+                    rows={3}
+                    className="w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 focus:border-blue-500 focus:outline-none"
+                    placeholder="What you built, tech used, and the outcome."
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-slate-400">Link (optional)</label>
+                    <input
+                      value={newProject.href}
+                      onChange={(event) => {
+                        setFormError(null);
+                        setNewProject((prev) => ({ ...prev, href: event.target.value }));
+                      }}
+                      type="url"
+                      className="w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 focus:border-blue-500 focus:outline-none"
+                      placeholder="https://github.com/your-project"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm text-slate-400">Tags / tech (press Enter)</label>
+                    <div className="flex gap-2">
+                      <input
+                        value={tagInput}
+                        onChange={(event) => setTagInput(event.target.value)}
+                        onKeyDown={handleTagKeyDown}
+                        className="flex-1 rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 focus:border-blue-500 focus:outline-none"
+                        placeholder="#TypeScript"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddTag}
+                        className="px-3 py-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    {newProject.tags.length ? (
+                      <div className="flex flex-wrap gap-2">
+                        {newProject.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="flex items-center gap-2 px-2 py-1 rounded-full bg-slate-800 text-xs text-slate-200 border border-slate-700"
+                          >
+                            {tag}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveTag(tag)}
+                              className="text-slate-500 hover:text-white focus:outline-none"
+                            >
+                              x
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-slate-500">Example: #Automation, #React, #Prisma</p>
+                    )}
+                  </div>
+                </div>
+
+                {formError ? <p className="text-sm text-amber-300">{formError}</p> : null}
+
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+                  >
+                    Save project
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="px-4 py-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition-colors border border-slate-700"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsAddingProject(true)}
+                className="group p-6 rounded-xl bg-slate-900/30 border border-slate-800 border-dashed hover:border-slate-600 transition-all flex flex-col justify-center items-center text-center cursor-pointer"
+              >
                 <div className="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center mb-3 group-hover:bg-slate-700 transition-colors">
                     <span className="text-2xl text-slate-400">+</span>
                 </div>
@@ -193,7 +466,8 @@ export default function ResumePage() {
                 <p className="text-slate-500 text-sm mt-2">
                     Use this space for finance algorithms, fitness apps, or other experiments.
                 </p>
-            </div>
+              </button>
+            )}
 
         </div>
       </section>
