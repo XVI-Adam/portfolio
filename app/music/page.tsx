@@ -1,4 +1,5 @@
 import { PageShell } from '@/components/layout/PageShell';
+import Image from 'next/image';
 
 export default function MusicPage() {
   return (
@@ -7,8 +8,15 @@ export default function MusicPage() {
       {/* Artist Section */}
       <section className="mb-12">
         <div className="bg-gradient-to-br from-fuchsia-900/20 to-purple-900/20 border border-fuchsia-500/20 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center text-xs text-slate-500">
-                
+            <div className="relative w-32 h-32 rounded-full overflow-hidden border border-fuchsia-500/50 shadow-lg shadow-fuchsia-900/30">
+                <Image 
+                  src="/drxxco.jpg" 
+                  alt="Drxxco14 artist portrait" 
+                  fill 
+                  className="object-cover" 
+                  sizes="128px"
+                  priority 
+                />
             </div>
             <div>
                 <h2 className="text-2xl font-bold text-white">Drxxco14</h2>
