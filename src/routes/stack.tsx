@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { RotateCcw, Gift, Zap, Star, CreditCard } from 'lucide-react';
 
 const PLATFORM_BASE_WIDTH = 120;
@@ -456,8 +457,8 @@ export default function StackGame() {
         <Gift size={16} /> {giftClaimed ? '✓ Claimed' : '+20 Gift'}
       </button>
 
-      <button
-        onClick={() => window.location.href = 'https://verticalsushi.zo.space/'}
+      <Link
+        to="/"
         className="easter-egg-spaceship fixed bottom-4 right-4 z-30 sm:bottom-12 sm:right-12 cursor-pointer text-5xl sm:text-8xl block hover:scale-125 group"
         title="🚀 Navigate back to portfolio (Easter egg!)"
       >
@@ -465,7 +466,7 @@ export default function StackGame() {
         <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-[#090d1c] border border-[#3b82f6] rounded px-2 py-1 whitespace-nowrap mono-font text-xs text-[#3b82f6] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
           Back to portfolio...
         </div>
-      </button>
+      </Link>
 
       <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20 flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-bold text-xs sm:text-sm gem-badge min-h-[40px] sm:min-h-[44px] justify-center">
         <Star size={16} fill="currentColor" /> {gems}
