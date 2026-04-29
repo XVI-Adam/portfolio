@@ -16,7 +16,7 @@ const GEM_PACKAGES = {
 };
 
 export default async (c: Context) => {
-  const stripeKey = process.env.STRIPE_SK_TEST;
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
   if (!stripeKey) {
     return c.json({ error: "Stripe not configured" }, 500);
   }
