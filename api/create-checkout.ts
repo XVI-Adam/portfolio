@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const stripeKey = process.env.STRIPE_SK_TEST
   if (!stripeKey) return res.status(500).json({ error: 'Stripe not configured' })
 
-  const stripe = new Stripe(stripeKey, { apiVersion: '2024-12-18.acacia' })
+  const stripe = new Stripe(stripeKey, { apiVersion: '2025-02-24.acacia' })
 
   const { type, package: pkg, amount, user_id } = req.body ?? {}
   if (!user_id) return res.status(400).json({ error: 'user_id required' })
