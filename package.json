@@ -3,21 +3,26 @@
   "version": "1.0.0",
   "description": "Zo Space portfolio site with Stack Tower game and Stripe integration",
   "scripts": {
-    "dev": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target node",
-    "start": "bun run src/index.ts"
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview"
   },
   "dependencies": {
     "hono": "^4.0.0",
-    "stripe": "^14.0.0",
     "lucide-react": "^0.400.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.14.2",
+    "stripe": "^14.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^6.0.1",
     "bun-types": "^1.0.0",
-    "typescript": "^5.4.0"
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.4.0",
+    "vite": "^8.0.10"
   }
 }

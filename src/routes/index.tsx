@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Portfolio() {
   const [time, setTime] = useState(new Date());
@@ -433,8 +434,8 @@ export default function Portfolio() {
         💎
       </button>
 
-      <a
-        href="/stack"
+      <Link
+        to="/stack"
         className="easter-egg-spaceship fixed bottom-4 right-4 z-30 sm:bottom-12 sm:right-12 cursor-pointer text-5xl sm:text-8xl block hover:scale-125 group"
         title="🚀 Navigate to tech stack (Easter egg!)"
       >
@@ -442,7 +443,7 @@ export default function Portfolio() {
         <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-[#090d1c] border border-[#3b82f6] rounded px-2 py-1 whitespace-nowrap mono-font text-xs text-[#3b82f6] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
           Launch sequence initiated...
         </div>
-      </a>
+      </Link>
 
       {showTipModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4" style={{background: 'rgba(0,0,0,0.7)'}}>
@@ -549,7 +550,7 @@ function AboutSection() {
   return (
     <div className="w-full max-w-4xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-9 animate-fadeIn mx-auto">
       <div className="card-glow bg-[#090d1c] border border-[#1a2240] rounded-2xl p-4 sm:p-5.5 relative group">
-        <img src="/images/pfp.jpeg" alt="Adam Martinez" className="w-full aspect-[3/4] object-cover rounded mb-3 sm:mb-4 group-hover:shadow-[inset_0_0_30px_rgba(59,130,246,0.2)] transition-all" />
+        <img src="/images/adam-photo.jpeg" alt="Adam Martinez" className="w-full aspect-[3/4] object-cover rounded mb-3 sm:mb-4 group-hover:shadow-[inset_0_0_30px_rgba(59,130,246,0.2)] transition-all" />
         <h3 className="display-font font-bold text-base sm:text-lg mb-0.5 group-hover:text-[#60a5fa] transition-colors">Adam Martinez</h3>
         <p className="mono-font text-xs text-[#3b82f6] mb-2 sm:mb-3">FOUNDER / BUILDER</p>
         <p className="text-xs sm:text-sm text-[#8892b0] leading-relaxed mb-3 sm:mb-3.5 group-hover:text-[#b8b8d8] transition-colors">
@@ -592,10 +593,9 @@ function MissionsSection() {
     {name: 'Jasper Photo Generator', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'LLM-powered photo generation toolkit', stack: ['Python', 'Gemini'], url: 'https://github.com/XVI-Adam/gemini-lab'},
     {name: 'AI-Powered Virtual Shopping Assistant', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'Virtual shopping chatbot powered by Gemini', stack: ['Python', 'LLMs'], url: 'https://github.com/XVI-Adam/gemini-jewelry-chatbot'},
     {name: 'Artist Management (Drxxco)', tag: 'MUSIC', color: 'bg-[rgba(124,58,237,0.12)] text-[#a78bfa]', desc: 'Business consultant for kado garments clothing brand', stack: ['TypeScript', 'React'], url: 'https://linktr.ee/dracodoesstuff1'},
-    {name: 'Consistency Copilot', tag: 'OPENCLAW', color: 'bg-[rgba(16,184,209,0.13)] text-[#10b8d1]', desc: 'Built using OpenClaw for AI-powered consistency tracking', stack: ['OpenClaw', 'Agents'], url: '#'},
-    {name: 'Internship Application Script', tag: 'AUTOMATION', color: 'bg-[rgba(168,85,247,0.12)] text-[#d8b4fe]', desc: 'Legacy script to track and manage internship applications', stack: ['Python', 'Automation'], url: '#'},
-    {name: 'NYC Restaurant Inspections', tag: 'DATA', color: 'bg-[rgba(239,68,68,0.12)] text-[#fca5a5]', desc: 'Deep dive analysis of NYC restaurant health inspections dataset', stack: ['Python', 'Analysis'], url: '#'},
-    {name: 'MU RAG Workshop', tag: 'EDUCATION', color: 'bg-[rgba(34,197,94,0.12)] text-[#86efac]', desc: 'Taught practical RAG (Retrieval-Augmented Generation) techniques', stack: ['Teaching', 'RAG'], url: '#'},
+    {name: 'Consistency Copilot', tag: 'OPENCLAW', color: 'bg-[rgba(16,184,209,0.13)] text-[#10b8d1]', desc: 'Built using OpenClaw for AI-powered consistency tracking', stack: ['OpenClaw', 'Agents'], url: 'https://github.com/XVI-Adam/consistency-copilot'},
+    {name: 'Internship Application Script', tag: 'AUTOMATION', color: 'bg-[rgba(168,85,247,0.12)] text-[#d8b4fe]', desc: 'Legacy script to track and manage internship applications', stack: ['JavaScript', 'Automation'], url: 'https://github.com/XVI-Adam/Internship-Application-Script'},
+{name: 'MU RAG Workshop', tag: 'EDUCATION', color: 'bg-[rgba(34,197,94,0.12)] text-[#86efac]', desc: 'Taught practical RAG (Retrieval-Augmented Generation) techniques', stack: ['Teaching', 'RAG'], url: 'https://github.com/XVI-Adam/MU_RAG_Workshop'},
   ];
 
   return (
