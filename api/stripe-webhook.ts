@@ -21,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const sig = req.headers['stripe-signature'] as string
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
-  const stripeKey = process.env.STRIPE_SK_TEST
+  const stripeKey = process.env.STRIPE_SECRET_KEY
 
   if (!sig || !webhookSecret || !stripeKey) {
     return res.status(400).json({ error: 'Missing Stripe configuration' })

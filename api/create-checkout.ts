@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const stripeKey = process.env.STRIPE_SK_TEST
+  const stripeKey = process.env.STRIPE_SECRET_KEY
   if (!stripeKey) return res.status(500).json({ error: 'Stripe not configured' })
 
   const stripe = new Stripe(stripeKey, { apiVersion: '2025-02-24.acacia' })
