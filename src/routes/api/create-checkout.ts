@@ -21,7 +21,7 @@ export default async (c: Context) => {
     return c.json({ error: "Stripe not configured" }, 500);
   }
 
-  const stripe = new Stripe(stripeKey, { apiVersion: "2024-12-18.acacia" });
+  const stripe = new Stripe(stripeKey, { apiVersion: "2025-02-24.acacia" });
   
   let body: CheckoutRequest;
   try {

@@ -81,7 +81,7 @@ export default async (c: Context) => {
   let event: Stripe.Event;
   try {
     const stripe = new Stripe(stripeKey || "", {
-      apiVersion: "2024-12-18.acacia",
+      apiVersion: "2025-02-24.acacia",
     });
     event = await stripe.webhooks.constructEventAsync(body, sig, webhookSecret);
   } catch (err) {

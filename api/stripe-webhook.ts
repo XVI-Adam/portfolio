@@ -7,7 +7,7 @@ import { addPurchase } from './_lib/storage'
 export const config = { api: { bodyParser: false } }
 
 async function toBuffer(readable: Readable): Promise<Buffer> {
-  const chunks: Buffer[] = []
+  const chunks: Uint8Array[] = []
   for await (const chunk of readable) {
     chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as string))
   }
@@ -27,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Missing Stripe configuration' })
   }
 
-  const stripe = new Stripe(stripeKey, { apiVersion: '2024-12-18.acacia' })
+  const stripe = new Stripe(stripeKey, { apiVersion: '2025-02-24.acacia' })
 
   let event: Stripe.Event
   try {

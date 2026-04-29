@@ -1,6 +1,7 @@
 {
   "name": "verticalsushi-portfolio",
   "version": "1.0.0",
+  "type": "module",
   "description": "Zo Space portfolio site with Stack Tower game and Stripe integration",
   "scripts": {
     "dev": "vite",
@@ -14,7 +15,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.14.2",
-    "stripe": "^14.0.0"
+    "stripe": "^17.7.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
