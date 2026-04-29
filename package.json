@@ -1,6 +1,7 @@
 {
   "name": "verticalsushi-portfolio",
   "version": "1.0.0",
+  "type": "module",
   "description": "Zo Space portfolio site with Stack Tower game and Stripe integration",
   "scripts": {
     "dev": "vite",
