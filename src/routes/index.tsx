@@ -590,6 +590,8 @@ function AboutSection() {
 function MissionsSection() {
   const projects = [
     {name: 'BodyCraft', tag: 'FITNESS', color: 'bg-[rgba(212,160,23,0.13)] text-[#d4a017]', desc: 'AI fitness gamification with battles', stack: ['Flutter', 'Firebase'], url: 'https://bodycraft-57154.web.app/'},
+    {name: 'AI Agent Pitch', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'Streaming AI chat that answers questions about me as an engineering candidate, with a JD fit-rater', stack: ['React', 'Groq'], url: 'https://ai-agent-pitch.vercel.app/'},
+    {name: 'ShopAtlas', tag: 'HACKATHON', color: 'bg-[rgba(249,115,22,0.13)] text-[#fb923c]', desc: 'Agentic shopping assistant built at the Microsoft × Coinbase × Tavily hackathon (NYC Tech Week) — searches the live web for products, ranks by price and match confidence, and automates checkout via Coinbase’s x402 payment protocol', stack: ['x402', 'Tavily', 'Coinbase', 'AgenticCommerce'], note: 'Demo video available'},
     {name: 'Jasper Photo Generator', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'LLM-powered photo generation toolkit', stack: ['Python', 'Gemini'], url: 'https://github.com/XVI-Adam/gemini-lab'},
     {name: 'AI-Powered Virtual Shopping Assistant', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'Virtual shopping chatbot powered by Gemini', stack: ['Python', 'LLMs'], url: 'https://github.com/XVI-Adam/gemini-jewelry-chatbot'},
     {name: 'Artist Management (Drxxco)', tag: 'MUSIC', color: 'bg-[rgba(124,58,237,0.12)] text-[#a78bfa]', desc: 'Business consultant for kado garments clothing brand', stack: ['TypeScript', 'React'], url: 'https://linktr.ee/dracodoesstuff1'},
@@ -605,13 +607,14 @@ function MissionsSection() {
         <span className="mono-font text-xs text-[#8892b0]">{projects.length} COMPLETED</span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {projects.map((p, idx) => (
-          <a
+        {projects.map((p, idx) => {
+          const Card = p.url ? 'a' : 'div';
+          const linkProps = p.url ? { href: p.url, target: '_blank', rel: 'noopener noreferrer' } : {};
+          return (
+          <Card
             key={p.name}
-            href={p.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-glow bg-[#090d1c] border border-[#1a2240] rounded-xl p-3 sm:p-4 group block transition-all hover:scale-105" 
+            {...linkProps}
+            className={`card-glow bg-[#090d1c] border border-[#1a2240] rounded-xl p-3 sm:p-4 group block transition-all hover:scale-105 ${p.url ? '' : 'cursor-default'}`}
             style={{animationDelay: `${idx * 0.1}s`}}
           >
             <span className={`mono-font text-xs font-medium tracking-wider uppercase px-2 py-1 rounded text-xs inline-block mb-2 ${p.color} group-hover:shadow-lg transition-all`}>{p.tag}</span>
@@ -625,10 +628,15 @@ function MissionsSection() {
                   </span>
                 ))}
               </div>
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded border border-[#1a2240] flex items-center justify-center text-[#8892b0] transition-all group-hover:border-[#3b82f6] group-hover:text-[#3b82f6] group-hover:bg-[rgba(59,130,246,0.13)] group-hover:shadow-lg group-hover:shadow-[rgba(59,130,246,0.2)] flex-shrink-0">→</div>
+              {p.url ? (
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded border border-[#1a2240] flex items-center justify-center text-[#8892b0] transition-all group-hover:border-[#3b82f6] group-hover:text-[#3b82f6] group-hover:bg-[rgba(59,130,246,0.13)] group-hover:shadow-lg group-hover:shadow-[rgba(59,130,246,0.2)] flex-shrink-0">→</div>
+              ) : p.note ? (
+                <span className="mono-font text-[10px] text-[#8892b0] flex items-center gap-1 flex-shrink-0 whitespace-nowrap">▶ {p.note}</span>
+              ) : null}
             </div>
-          </a>
-        ))}
+          </Card>
+          );
+        })}
       </div>
     </div>
   );
@@ -686,9 +694,9 @@ function ResumeSection() {
               <p className="text-xs leading-relaxed">Designed and engineered a full-stack freemium Native app end-to-end with 25+ MAU. Built a 117+ content library, and multi-program system targeting first workout in under 3 minutes.</p>
             </div>
             <div>
-              <p className="font-medium text-[#f0f0ff] text-xs sm:text-sm">Associate Software Developer — Sigo Signs</p>
-              <p className="mono-font text-xs text-[#3b82f6] mb-1">Jun 2025 – Jan 2026</p>
-              <p className="text-xs leading-relaxed">Built Python automation pipeline handling 100k+ file operations. Designed and built an order management product in Next.js + TypeScript, adopted daily across 6,000+ active orders.</p>
+              <p className="font-medium text-[#f0f0ff] text-xs sm:text-sm">Software Trainer → Internal Tools Developer — Sigo Signs</p>
+              <p className="mono-font text-xs text-[#3b82f6] mb-1">Oct 2025 – Dec 2025</p>
+              <p className="text-xs leading-relaxed">Hired to train staff on in-house software; became the sole developer shipping features during the company's C#/.NET → TypeScript platform migration. Rebuilt the legacy automation pipeline on the new stack — 100k+ file operations with throttling, retry logic, and audit trails — and built the Next.js/TypeScript order management product adopted across 6,000+ active orders.</p>
             </div>
           </div>
         </div>
