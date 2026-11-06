@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 
 export default function Portfolio() {
@@ -577,7 +578,7 @@ function HeroSection({ scrollToSection }) {
         </p>
         <div className="inline-flex items-center gap-2.5 mono-font text-xs text-[#3b82f6] bg-[rgba(59,130,246,0.09)] border border-[rgba(59,130,246,0.35)] rounded-full px-3 py-1.5 mb-5 sm:mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] flex-shrink-0" style={{ boxShadow: '0 0 8px #10b981' }} />
-          <span className="tracking-wide">OPEN TO: FOUNDING ENG / AI PRODUCT · NYC</span>
+          <span className="tracking-wide">OPEN TO: FORWARD-DEPLOYED / SOLUTIONS / FULL-STACK · NYC</span>
         </div>
         <div className="flex gap-2 sm:gap-3 flex-wrap">
           <button
@@ -628,11 +629,11 @@ function AboutSection() {
     },
     {
       area: 'Agentic / LLM Systems',
-      proof: 'Schema-validated tool calling, multi-agent role boundaries, retrieval grounding, and x402 machine-to-machine payments across Claude, OpenAI, Gemini and Groq APIs. 62-case eval harness with four grading layers.',
+      proof: 'Schema-validated tool calling, multi-agent role boundaries, retrieval grounding, and x402 machine-to-machine payments across Claude, OpenAI, Gemini and Groq APIs. 52-case eval harness with four grading layers.',
     },
     {
       area: 'Mobile (Flutter)',
-      proof: 'Shipped BodyCraft solo to web — skill progression, live battles arena, 114-workout library, real-time Firestore sync, Google/email auth.',
+      proof: 'Shipped BodyCraft solo to web — skill progression, live battles arena, 117-workout library, real-time Firestore sync, Google/email auth.',
     },
     {
       area: 'Systems & Performance',
@@ -691,126 +692,351 @@ function AboutSection() {
 
 function MissionsSection({ scrollToSection }) {
   const [showMore, setShowMore] = useState(false);
-  const [demo, setDemo] = useState(null);
+  const [open, setOpen] = useState(null);
+  const closeRef = useRef(null);
 
   useEffect(() => {
-    if (!demo) return;
-    const onKey = e => { if (e.key === 'Escape') setDemo(null); };
+    if (!open) return;
+    const onKey = e => { if (e.key === 'Escape') setOpen(null); };
     window.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
     };
-  }, [demo]);
+  }, [open]);
 
-  const featured = [
-    {
-      name: 'BodyCraft',
-      tag: 'FLUTTER · SHIPPED',
-      color: 'bg-[rgba(212,160,23,0.13)] text-[#d4a017]',
-      metric: 'Shipped solo to production',
-      desc: 'Calisthenics app built end-to-end alone: skill progression system, live battles arena, 114-workout library, real-time Firestore sync, Google/email auth.',
-      stack: ['Flutter', 'Firebase', 'Dart'],
-      url: 'https://bodycraft-57154.web.app/',
-    },
+  const shipped = [
     {
       name: 'Ask Adam',
       tag: 'AI AGENT',
       color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]',
-      metric: '62-case eval harness, 4 grading layers',
-      desc: 'Recruiter-facing chat agent grounded in a single canonical facts file so it never drifts from what is verifiable. Ships a JD Fit Rater that scores any job description against my actual work.',
+      metric: '52-case eval harness, 4 grading layers',
+      pitch: 'Recruiter-facing chat that answers questions about my work and rates any job description against it.',
+      role: 'Solo build',
       stack: ['React', 'TypeScript', 'Groq API'],
-      url: 'https://ai-agent-pitch.vercel.app',
+      links: [{ label: 'Live', url: 'https://ai-agent-pitch.vercel.app/' }],
+      details: [
+        'Grounded in a single canonical facts file so it never drifts from what is verifiable.',
+        'JD Fit Rater: paste a job description and get a fit score against my actual work.',
+        '52-case eval harness with four grading layers.',
+      ],
     },
     {
-      name: 'ShopAtlas',
-      tag: 'AGENTIC COMMERCE',
-      color: 'bg-[rgba(16,184,209,0.13)] text-[#10b8d1]',
-      metric: "Coinbase x402 · payment in one round trip",
-      desc: "Built the agent checkout path on Coinbase's x402: revives HTTP 402 so an agent pays per API call in USDC — no account, no API key, no human in the payment loop. Gated behind explicit purchase confirmation.",
-      stack: ['x402', 'USDC', 'Coinbase', 'Tavily'],
-      demo: '/media/shopatlas-demo.mp4',
-      poster: '/media/shopatlas-poster.jpg',
-      demoLength: '36s',
+      name: 'BodyCraft',
+      tag: 'FLUTTER · SHIPPED',
+      color: 'bg-[rgba(212,160,23,0.13)] text-[#d4a017]',
+      metric: '117 workouts, shipped solo to production',
+      pitch: 'Freemium calisthenics PWA with a skill road, a battles arena and a 117-workout library.',
+      role: 'Solo build, end to end',
+      stack: ['Flutter', 'Firebase', 'Dart'],
+      links: [{ label: 'Live', url: 'https://bodycraft-57154.web.app/' }],
+      details: [
+        'Skill road: a progression system that tracks which movements you have unlocked.',
+        'Live battles arena.',
+        '117-workout library.',
+        'Real-time Firestore sync with Google and email sign-in.',
+      ],
     },
     {
       name: 'Sigo Order Platform',
-      tag: 'INTERNAL TOOLS',
+      tag: 'WORK · INTERNAL TOOLS',
       color: 'bg-[rgba(34,197,94,0.12)] text-[#86efac]',
       metric: '6,000+ active orders, used daily',
-      desc: 'Replaced a manual C#/.NET process with a Next.js + TypeScript order management product — data model, live status pipeline, ops dashboard — plus the Python pipeline behind it at 100k+ file ops a day.',
-      stack: ['Next.js', 'TypeScript', 'Prisma', '.NET Core'],
+      pitch: 'Order management product that replaced a manual C#/.NET process at Sigo Signs.',
+      role: 'Internal Tools Developer',
+      stack: ['Next.js', 'TypeScript', 'Prisma', '.NET Core', 'Python'],
       internal: true,
+      details: [
+        'Data model, live status pipeline and ops dashboard, used daily across 6,000+ active orders.',
+        'Python batch pipeline behind fulfillment: 100k+ file operations a day with throttling, retries, dry-run/apply modes and CSV audit trails.',
+        '.NET Core REST API that became the standard data-access layer for 3 internal teams.',
+      ],
     },
+  ];
+
+  const hackathons = [
+    {
+      name: 'Shibboleth',
+      tag: 'HACKATHON · AI SAFETY',
+      color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]',
+      event: 'MongoDB Harness Engineering & Model Wrangling Hackathon · NYC · Sep 2026',
+      metric: '6th place · top 5 advanced to present',
+      pitch: 'Agentic harness that flags open-weight models whose safety refusals were stripped (abliterated). Every scan is stored and checked against the next, so it gets better the more models it sees.',
+      role: 'Built the benign-control corpus; scanned 5 models',
+      stack: ['Python', 'MongoDB Atlas', 'Vector Search', 'Next.js'],
+      links: [
+        { label: 'Repo', url: 'https://github.com/TheApexWu/shibboleth' },
+        { label: 'Results', url: 'https://cerebralvalley.ai/e/mongodb-nyc-hackathon/hackathon/gallery?project=1' },
+      ],
+      details: [
+        'Built the benign-control corpus the harness compares suspect models against.',
+        'Scanned 5 models during the event.',
+        'Each scan is stored as a MongoDB Atlas document; a change stream triggers new scans and $vectorSearch finds the nearest known abliterated model.',
+      ],
+    },
+    {
+      name: 'Libreta',
+      tag: 'HACKATHON · FINANCE',
+      color: 'bg-[rgba(212,160,23,0.13)] text-[#d4a017]',
+      event: 'Latinos x AI Hackathon NYC · Columbia · Oct 2026 · Finance track',
+      metric: 'Voice bookkeeping → lender-ready bank report',
+      pitch: 'Spanish-first, voice-first bookkeeping for cash businesses.',
+      role: 'Solo build',
+      stack: ['Base44', 'Claude API', 'ElevenLabs'],
+      links: [{ label: 'Live', url: 'https://libreta-cuentas.base44.app/' }],
+      details: [
+        'Owners keep their books by voice, in Spanish first.',
+        'Produces a lender-ready bank report, so a cash business can show its income when applying for credit.',
+        'Built solo on Base44 with the Claude API and ElevenLabs.',
+      ],
+    },
+    {
+      name: 'ShopAtlas',
+      tag: 'HACKATHON · AGENTIC COMMERCE',
+      color: 'bg-[rgba(16,184,209,0.13)] text-[#10b8d1]',
+      event: 'Agentic Commerce Hackathon · Microsoft × Coinbase × Tavily · NYC Tech Week · Jun 2026',
+      metric: 'Coinbase x402 · payment in one round trip',
+      pitch: 'Shopping agent that pays per API call in USDC: no account, no API key, no human in the payment loop.',
+      role: 'Built the agent checkout path',
+      stack: ['x402', 'USDC', 'Coinbase', 'Tavily'],
+      details: [
+        "Uses Coinbase's x402, which revives HTTP 402 so an agent can pay for each call itself.",
+        'Nothing purchases without explicit confirmation.',
+      ],
+      demo: '/media/shopatlas-demo.mp4',
+      poster: '/media/shopatlas-poster.jpg',
+      demoLength: '36s',
+      note: 'Local dev build. Shows the search-to-checkout flow; the x402 layer bills per API call server-side.',
+    },
+    {
+      name: 'Tu Inquilino',
+      tag: 'HACKATHON · CIVIC',
+      color: 'bg-[rgba(34,197,94,0.12)] text-[#86efac]',
+      event: 'Build-a-thon at Sankofa Haus, powered by JPMorganChase · Bronx',
+      metric: 'Housing records for 600 Bronx buildings, plus guardrails',
+      pitch: "Bilingual English/Spanish tenant advocate for Bronx renters: look up a building's housing record, then get plain-language help with your rights.",
+      role: 'Solo build',
+      stack: ['Amazon Quick', 'NYC Open Data'],
+      links: [{ label: 'App (AWS login)', url: 'https://quick.aws.com/sn/account/759498975392/apps/2614e056-9c16-4d6d-8666-805e136d6a2c/view/Tu-Inquilino-Bronx-Tenant-Navigator?state=QUFBQURtdGxlUzB4TlRZNE9UVTFNekEzMWpKTlFmOUZxNVhSVDdsMFVOTUhpak5mRnB6NkZmVXd2VlNMZFR5S1AzU3RGWWpCM1lPaUJKbGMyaElmVjhmbWJveEx6b0RhMndQSUlUSjhpTExwZEJwVndXX3BQSW13djJhcUxJdWU2X29kY3lkV3R2RmpLM0h6dndRSFgzQndXcG5JbHRYTEhNVnV3ZW1LSHFUYVJhYzFfQTJacER5dzhCZXhUZUdiWXlxZkN0cG16Z0NGX1BPSmFPNWhvOVhBblBqdHlwTDhDYWtiTWlmb3VMbkw5RE41ck9MWWZYVFducGpa' }],
+      details: [
+        'Building Lookup: enter a Bronx address, BBL or BIN to see its last 12 months of HPD violations, HPD complaints, 311 calls and registration, across the 600 highest-activity buildings.',
+        'Chat explains renter rights in English or Spanish and drafts a repair-request letter and a 311 complaint.',
+        'Says so when it lacks reliable information instead of guessing.',
+        "Eviction notices, court papers, lockouts and threats get pointed to free legal help: Bronx Legal Services, the Legal Aid Society, NYC's Right to Counsel.",
+      ],
+      shots: [
+        { src: '/media/tu-inquilino-lookup.webp', alt: 'Tu Inquilino Building Lookup tab with sample Bronx addresses and data sources' },
+        { src: '/media/tu-inquilino-chat.webp', alt: 'Tu Inquilino chat tab with English and Spanish starter questions' },
+      ],
+      note: 'Runs inside Amazon Quick; opening it requires an AWS login.',
+    },
+  ];
+
+  const groups = [
+    { label: 'Shipped', items: shipped, cols: 'sm:grid-cols-2 lg:grid-cols-3' },
+    { label: 'Hackathons', items: hackathons, cols: 'sm:grid-cols-2' },
   ];
 
   const more = [
     { name: 'Oro Latino', tag: 'CLIENT · IN PROGRESS', color: 'bg-[rgba(212,160,23,0.13)] text-[#d4a017]', desc: 'Interactive canvas storefront for a NYC jewelry retailer — Verlet-simulated draggable chains, procedurally rendered gold links, bilingual copy. Took the scene from ~5fps back to 60fps idle.', stack: ['Canvas', 'TypeScript'], url: 'https://github.com/XVI-Adam' },
-    { name: 'Jasper Photo Generator', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'LLM-powered photo generation toolkit.', stack: ['Python', 'Gemini'], url: 'https://github.com/XVI-Adam/gemini-lab' },
-    { name: 'Virtual Shopping Assistant', tag: 'AI', color: 'bg-[rgba(59,130,246,0.13)] text-[#3b82f6]', desc: 'Virtual shopping chatbot powered by Gemini.', stack: ['Python', 'LLMs'], url: 'https://github.com/XVI-Adam/gemini-jewelry-chatbot' },
     { name: 'Consistency Copilot', tag: 'AGENTS', color: 'bg-[rgba(16,184,209,0.13)] text-[#10b8d1]', desc: 'AI-powered consistency tracking built on OpenClaw.', stack: ['OpenClaw', 'Agents'], url: 'https://github.com/XVI-Adam/consistency-copilot' },
     { name: 'MU RAG Workshop', tag: 'TEACHING', color: 'bg-[rgba(34,197,94,0.12)] text-[#86efac]', desc: 'Taught practical retrieval-augmented generation techniques at Manhattan University.', stack: ['Teaching', 'RAG'], url: 'https://github.com/XVI-Adam/MU_RAG_Workshop' },
-    { name: 'Internship Application Script', tag: 'ARCHIVE', color: 'bg-[rgba(136,146,176,0.12)] text-[#8892b0]', desc: 'Early script to track and manage internship applications.', stack: ['JavaScript'], url: 'https://github.com/XVI-Adam/Internship-Application-Script' },
-    { name: 'Artist Management — Drxxco', tag: 'SIDE · NON-ENG', color: 'bg-[rgba(136,146,176,0.12)] text-[#8892b0]', desc: 'Not a product. Business consulting for kado garments and management for the artist Drxxco.', stack: ['Consulting'], url: 'https://linktr.ee/dracodoesstuff1' },
   ];
 
   return (
     <div className="w-full max-w-5xl px-4 sm:px-6 lg:px-8 animate-fadeIn mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 mb-6 sm:mb-8">
         <h2 className="display-font text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tighter hover:text-[#3b82f6] transition-colors">Mission Log</h2>
-        <span className="mono-font text-xs text-[#8892b0]">SELECTED WORK</span>
+        <span className="mono-font text-xs text-[#8892b0]">SELECTED WORK · TAP A CARD FOR DETAILS</span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-        {featured.map((p, idx) => {
-          const Card = p.demo ? 'button' : p.internal ? 'div' : 'a';
-          const linkProps = p.demo
-            ? { onClick: () => setDemo(p), type: 'button' }
-            : p.internal
-              ? {}
-              : { href: p.url, target: '_blank', rel: 'noopener noreferrer' };
-          return (
-            <Card
-              key={p.name}
-              {...linkProps}
-              className="card-glow bg-[#090d1c] border border-[#1a2240] rounded-xl p-4 sm:p-5 group block transition-all w-full text-left"
-              style={{ animationDelay: `${idx * 0.1}s` }}
-            >
-              <span className={`mono-font text-xs font-medium tracking-wider uppercase px-2 py-1 rounded inline-block mb-2.5 ${p.color} group-hover:shadow-lg transition-all`}>{p.tag}</span>
-              <h4 className="display-font font-bold text-base sm:text-lg mb-1.5 group-hover:text-[#3b82f6] transition-colors">{p.name}</h4>
-              <p className="mono-font text-xs text-[#10b981] mb-2.5">{p.metric}</p>
-              <p className="text-xs sm:text-sm text-[#a8b2d1] leading-relaxed mb-4 group-hover:text-[#c3cce4] transition-colors">{p.desc}</p>
-              <div className="flex justify-between items-end gap-2">
-                <div className="flex gap-1 flex-wrap">
-                  {p.stack.map(t => (
-                    <span key={t} className="mono-font text-[10px] text-[#a8b2d1] bg-[rgba(59,130,246,0.05)] border border-[#1a2240] px-1.5 py-0.5 rounded group-hover:bg-[rgba(59,130,246,0.1)] group-hover:border-[#3b82f6] transition-all">
-                      {t}
-                    </span>
+      <div className="space-y-8 sm:space-y-10">
+        {groups.map(group => (
+          <section key={group.label} aria-label={group.label}>
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <h3 className="mono-font text-xs font-semibold uppercase tracking-widest text-[#c3cce4]">{group.label}</h3>
+              <span className="mono-font text-[10px] text-[#8892b0]">{group.items.length}</span>
+              <span className="flex-1 h-px bg-[#1a2240]" />
+            </div>
+            <div className={`grid grid-cols-1 ${group.cols} gap-3 sm:gap-4`}>
+              {group.items.map((p, idx) => (
+                <article
+                  key={p.name}
+                  className="card-glow bg-[#090d1c] border border-[#1a2240] rounded-xl group flex flex-col transition-all hover:border-[#3b82f6]"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpen(p)}
+                    aria-haspopup="dialog"
+                    className="text-left p-4 sm:p-5 pb-3 sm:pb-3 flex-1 rounded-t-xl"
+                  >
+                    <span className={`mono-font text-[10px] sm:text-xs font-medium tracking-wider uppercase px-2 py-1 rounded inline-block mb-2.5 ${p.color}`}>{p.tag}</span>
+                    <h4 className="display-font font-bold text-base sm:text-lg mb-1 group-hover:text-[#3b82f6] transition-colors">{p.name}</h4>
+                    {p.event && <p className="mono-font text-[10px] text-[#8892b0] leading-relaxed mb-1.5">{p.event}</p>}
+                    <p className="mono-font text-xs text-[#10b981] mb-2.5">{p.metric}</p>
+                    <p className="text-sm text-[#a8b2d1] leading-relaxed mb-2.5 group-hover:text-[#c3cce4] transition-colors">{p.pitch}</p>
+                    {p.role && (
+                      <p className="text-xs text-[#a8b2d1] leading-relaxed">
+                        <span className="mono-font text-[10px] text-[#3b82f6] tracking-widest mr-1.5">ROLE</span>{p.role}
+                      </p>
+                    )}
+                  </button>
+                  <div className="px-4 sm:px-5 pb-4 flex justify-between items-end gap-2">
+                    <div className="flex gap-1 flex-wrap">
+                      {p.stack.map(t => (
+                        <span key={t} className="mono-font text-[10px] text-[#a8b2d1] bg-[rgba(59,130,246,0.05)] border border-[#1a2240] px-1.5 py-0.5 rounded group-hover:border-[#3b82f6] transition-all">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    {p.demo ? (
+                      <button
+                        type="button"
+                        onClick={() => setOpen(p)}
+                        className="mono-font text-[10px] text-[#3b82f6] flex items-center gap-1.5 whitespace-nowrap flex-shrink-0 border border-[rgba(59,130,246,0.35)] bg-[rgba(59,130,246,0.09)] rounded-full px-2.5 py-1 min-h-[32px] hover:bg-[rgba(59,130,246,0.18)] transition-colors"
+                      >
+                        <svg className="w-2.5 h-2.5" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M1 0.5 L9 5 L1 9.5 Z" /></svg>
+                        WATCH DEMO · {p.demoLength}
+                      </button>
+                    ) : p.internal ? (
+                      <button
+                        type="button"
+                        onClick={() => scrollToSection('resume')}
+                        className="mono-font text-[10px] text-[#8892b0] hover:text-[#3b82f6] transition-colors whitespace-nowrap flex-shrink-0 underline underline-offset-2 min-h-[32px]"
+                      >
+                        See resume
+                      </button>
+                    ) : (
+                      <div className="flex gap-1.5 flex-shrink-0">
+                        {p.links.map(link => (
+                          <a
+                            key={link.label}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mono-font text-[10px] uppercase tracking-wider text-[#a8b2d1] border border-[#1a2240] rounded px-2 min-h-[32px] flex items-center whitespace-nowrap hover:border-[#3b82f6] hover:text-[#3b82f6] hover:bg-[rgba(59,130,246,0.13)] transition-all"
+                          >
+                            {link.label.split(' ')[0]} ↗
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      {open && createPortal(
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center modal-overlay sm:p-8"
+          style={{ background: 'rgba(3,4,12,0.88)', backdropFilter: 'blur(6px)' }}
+          onClick={() => setOpen(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-detail-title"
+        >
+          <div
+            className="w-full sm:max-w-2xl max-h-[88vh] overflow-y-auto overscroll-contain bg-[#090d1c] border border-[#1a2240] rounded-t-2xl sm:rounded-xl shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="sticky top-0 z-10 bg-[#0f1526] border-b border-[#1a2240] px-4 sm:px-6 py-3 flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <span className={`mono-font text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 rounded inline-block mb-1.5 ${open.color}`}>{open.tag}</span>
+                <h3 id="project-detail-title" className="display-font font-bold text-lg sm:text-xl text-[#f0f0ff]">{open.name}</h3>
+                {open.event && <p className="mono-font text-[11px] text-[#8892b0] leading-relaxed mt-0.5">{open.event}</p>}
+              </div>
+              <button
+                ref={closeRef}
+                onClick={() => setOpen(null)}
+                className="text-[#8892b0] hover:text-[#f0f0ff] text-xl leading-none w-11 h-11 -mr-2 flex items-center justify-center flex-shrink-0"
+                aria-label="Close details"
+              >
+                ✕
+              </button>
+            </div>
+
+            {open.demo && (
+              <video
+                src={open.demo}
+                poster={open.poster}
+                controls
+                autoPlay
+                playsInline
+                preload="metadata"
+                className="w-full block bg-black"
+                style={{ maxHeight: '55vh' }}
+              />
+            )}
+            {open.shots && (
+              <div className="flex flex-col gap-px bg-[#1a2240] border-b border-[#1a2240]">
+                {open.shots.map(shot => (
+                  <img key={shot.src} src={shot.src} alt={shot.alt} width={2000} height={995} loading="lazy" decoding="async" className="w-full h-auto block bg-[#0f1526]" />
+                ))}
+              </div>
+            )}
+
+            <div className="px-4 sm:px-6 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] space-y-5">
+              <p className="text-[15px] sm:text-base text-[#c3cce4] leading-relaxed">{open.pitch}</p>
+
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2.5 text-sm">
+                {open.role && (
+                  <>
+                    <dt className="mono-font text-[10px] text-[#3b82f6] tracking-widest pt-1">ROLE</dt>
+                    <dd className="text-[#f0f0ff] leading-relaxed">{open.role}</dd>
+                  </>
+                )}
+                <dt className="mono-font text-[10px] text-[#3b82f6] tracking-widest pt-1">{open.event ? 'RESULT' : 'OUTCOME'}</dt>
+                <dd className="text-[#10b981] leading-relaxed">{open.metric}</dd>
+                <dt className="mono-font text-[10px] text-[#3b82f6] tracking-widest pt-1">STACK</dt>
+                <dd className="text-[#f0f0ff] leading-relaxed">{open.stack.join(' · ')}</dd>
+              </dl>
+
+              <ul className="space-y-2.5 border-t border-[#1a2240] pt-4">
+                {open.details.map(d => (
+                  <li key={d} className="text-sm leading-relaxed text-[#a8b2d1] pl-3.5 relative before:content-['·'] before:absolute before:left-0 before:text-[#3b82f6]">
+                    {d}
+                  </li>
+                ))}
+              </ul>
+
+              {open.note && <p className="mono-font text-[11px] text-[#8892b0] leading-relaxed">{open.note}</p>}
+
+              {open.links && (
+                <div className="flex flex-col sm:flex-row gap-2">
+                  {open.links.map(link => (
+                    <a
+                      key={link.label}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="display-font btn-hover flex-1 sm:flex-none px-5 rounded-lg border border-[#1a2240] bg-[#0f1526] text-sm font-medium text-[#f0f0ff] hover:border-[#3b82f6] hover:text-[#3b82f6] min-h-[44px] flex items-center justify-center gap-2"
+                    >
+                      {link.label} ↗
+                    </a>
                   ))}
                 </div>
-                {p.demo ? (
-                  <span className="mono-font text-[10px] text-[#3b82f6] flex items-center gap-1.5 whitespace-nowrap flex-shrink-0 border border-[rgba(59,130,246,0.35)] bg-[rgba(59,130,246,0.09)] rounded-full px-2.5 py-1 group-hover:bg-[rgba(59,130,246,0.18)] transition-colors">
-                    <svg className="w-2.5 h-2.5" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M1 0.5 L9 5 L1 9.5 Z" /></svg>
-                    WATCH DEMO · {p.demoLength}
-                  </span>
-                ) : p.internal ? (
-                  <button
-                    onClick={() => scrollToSection('resume')}
-                    className="mono-font text-[10px] text-[#8892b0] hover:text-[#3b82f6] transition-colors whitespace-nowrap flex-shrink-0 underline underline-offset-2"
-                  >
-                    See resume
-                  </button>
-                ) : (
-                  <div className="w-7 h-7 rounded border border-[#1a2240] flex items-center justify-center text-[#8892b0] transition-all group-hover:border-[#3b82f6] group-hover:text-[#3b82f6] group-hover:bg-[rgba(59,130,246,0.13)] group-hover:shadow-lg group-hover:shadow-[rgba(59,130,246,0.2)] flex-shrink-0">→</div>
-                )}
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+              )}
+              {open.internal && (
+                <button
+                  onClick={() => { setOpen(null); scrollToSection('resume'); }}
+                  className="display-font btn-hover w-full sm:w-auto px-5 rounded-lg border border-[#1a2240] bg-[#0f1526] text-sm font-medium text-[#f0f0ff] hover:border-[#3b82f6] hover:text-[#3b82f6] min-h-[44px] flex items-center justify-center"
+                >
+                  Internal tool · see resume
+                </button>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
 
-      <div className="mt-6 sm:mt-8">
+      <div className="mt-8 sm:mt-10">
         <button
           onClick={() => setShowMore(open => !open)}
           aria-expanded={showMore}
@@ -820,49 +1046,6 @@ function MissionsSection({ scrollToSection }) {
           {showMore ? 'HIDE' : 'MORE'} PROJECTS ({more.length}) · ALSO ON{' '}
           <span className="underline underline-offset-2">GITHUB</span>
         </button>
-
-      {demo && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4 sm:p-8"
-          style={{ background: 'rgba(3,4,12,0.88)', backdropFilter: 'blur(6px)' }}
-          onClick={() => setDemo(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${demo.name} demo video`}
-        >
-          <div
-            className="w-full max-w-4xl bg-[#090d1c] border border-[#1a2240] rounded-xl overflow-hidden shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="bg-[#0f1526] border-b border-[#1a2240] px-3 sm:px-5 py-2.5 flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <p className="display-font font-bold text-sm text-[#f0f0ff] truncate">{demo.name} — demo</p>
-                <p className="mono-font text-[10px] text-[#8892b0] truncate">{demo.metric}</p>
-              </div>
-              <button
-                onClick={() => setDemo(null)}
-                className="text-[#8892b0] hover:text-[#f0f0ff] text-xl leading-none w-10 h-10 flex items-center justify-center flex-shrink-0"
-                aria-label="Close demo"
-              >
-                ✕
-              </button>
-            </div>
-            <video
-              src={demo.demo}
-              poster={demo.poster}
-              controls
-              autoPlay
-              playsInline
-              preload="metadata"
-              className="w-full block bg-black"
-              style={{ maxHeight: '70vh' }}
-            />
-            <p className="mono-font text-[10px] text-[#8892b0] px-3 sm:px-5 py-2.5 leading-relaxed border-t border-[#1a2240]">
-              Local dev build · Microsoft × Coinbase × Tavily hackathon, NYC Tech Week. Shows the search-to-checkout flow; the x402 layer bills per API call server-side. Nothing purchases without explicit confirmation.
-            </p>
-          </div>
-        </div>
-      )}
 
         {showMore && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4 section-fade">
@@ -900,7 +1083,7 @@ function ContactSection() {
         <div className="mono-font text-xs text-[#3b82f6] tracking-widest uppercase mb-3 sm:mb-4 hover:text-[#60a5fa] transition-colors">Let's Build Together</div>
         <h2 className="display-font text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 tracking-tighter hover:text-[#3b82f6] transition-colors">Get In Touch</h2>
         <p className="text-sm sm:text-base text-[#a8b2d1] leading-relaxed mb-6 sm:mb-9 max-w-lg hover:text-[#c3cce4] transition-colors">
-          Open to founding engineer and AI product roles at early-stage teams. Based in NYC — always down for a coffee talk.
+          Open to forward-deployed, solutions and full-stack engineering roles at AI-native startups. Based in NYC — always down for a coffee talk.
         </p>
         <div className="flex gap-2 sm:gap-3 justify-center flex-wrap">
           {[{ label: 'Email', href: 'mailto:adammartinez.martinez2@gmail.com' }, { label: 'GitHub', href: 'https://github.com/XVI-Adam' }, { label: 'LinkedIn', href: 'https://linkedin.com/in/xvi-adam' }, { label: 'Twitter', href: 'https://x.com/TheAdamAgenda' }].map(link => (
@@ -922,7 +1105,7 @@ function ResumeSection() {
       loc: 'NYC',
       dates: 'Jan 2026 – Present',
       bullets: [
-        'Shipped BodyCraft, a Flutter/Firebase calisthenics app, solo to web — skill progression system, live battles arena, 114-workout library, real-time Firestore sync, Google/email auth.',
+        'Shipped BodyCraft, a Flutter/Firebase calisthenics app, solo to web — skill progression system, live battles arena, 117-workout library, real-time Firestore sync, Google/email auth.',
         'Building Oro Latino, an interactive canvas storefront for a NYC jewelry retailer: Verlet-simulated draggable chains, procedurally rendered gold links, bilingual product copy.',
         'Diagnosed and fixed the rendering regression that dropped that scene to ~5fps — back to 60fps idle at one draw call per frame on a 4.1MB atlas.',
       ],
